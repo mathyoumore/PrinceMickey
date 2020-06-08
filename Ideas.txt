@@ -1,0 +1,27 @@
+1. What if you only Supplies and horse? More money/turn? More often to hit 8?
+2.
+
+Card(count)
+Action(count)
+DiscardForBenefit(type,{draw: :discarded})
+Trash(count)
+PickFromDiscard
+SilverListener
+MillAndTryToPlay(type)
+Gain(cost)
+Gain(:explicit_card)
+ForceTopdeck(type)
+ForceRevealHand
+CardCountListener(type, {effect: params})
+ForceDiscardTo(3)
+MayTrash(:explicit_card)
+if MayTrash, addCoins(3)
+EmptySupplyListener
+TrashAndGain(exact?,bonus)
+PlayTwice(type)
+ForceRevealAndTrash(revealCount, [trashtypes], [sparedCards])
+Library
+GainToHand
+ForceGainCurse
+ChooseTrashFromTopdeck(2)
+ChooseDiscardFromTopdeck(2)
