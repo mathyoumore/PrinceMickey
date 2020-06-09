@@ -65,14 +65,12 @@ class Hand
     cardOrder = [cardOrder].flatten
     costs = @cardFactory.cost_hash(cardOrder)
     cardOrder.each do |wantedCard|
-      # next unless costs[wantedCard] <= @player.coins
       if costs[wantedCard] <= @player.coins
         @deck.buy(wantedCard)
-        pp "I bought a Treasure Map on turn #{@player.turns} with #{@player.coins}"
-        binding.pry if @player.coins == 5
+        # pp "I bought a Treasure Map on turn #{@player.turns} with #{@player.coins}"
         break
       else
-        pp "I failed to buy a Treasure Map on turn #{@player.turns}"
+        # pp "I failed to buy a Treasure Map on turn #{@player.turns}"
       end
     end
   end
@@ -137,6 +135,10 @@ class Hand
 
   def grand_count_of_card(card)
     get_all_of_card(card).count + @deck.get_all_of_card(card).count
+  end
+
+  def grand_count_of_all_cards
+    @cards.count + @deck.grand_count_of_all_cards
   end
 
   def find_and_discard(discardingCard)

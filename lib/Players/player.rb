@@ -5,13 +5,14 @@ class Player
   attr_reader :deckStory, :coins, :hand, :actions, :turns
 
   def initialize
-    @turnsNeeded = []
+    @turnsNeeded = {}
     @turns = 0
     @deckStory = []
     @actionCards = []
     @treasureCards = []
     @coins = 0
     @actions = 0
+    @buys = 0
     reset
     draw_new
   end
@@ -30,7 +31,6 @@ class Player
     2.times do
       draw_new
       buy_phase
-      # TODO Players are able to buy 2 treasure maps on a 5-2 open, unknown how
     end
   end
 
@@ -38,12 +38,14 @@ class Player
     @turns += 1
     @coins = 0
     @actions = 1
+    @buys = 1
     @hand.draw_new
   end
 
   def buy_phase
     @hand.play_all_treasures
-    @hand.try_to_buy(buy_order)
+    @hand.try_to_buy(buy_order) if can_buy?
+    @buys -= 1
   end
 
   def buy_order
@@ -59,7 +61,8 @@ class Player
   end
 
   def progress
-    @turnsNeeded.size
+    return 0 if @turnsNeeded.values.empty?
+    @turnsNeeded.values.inject(:+)
   end
 
   def add_coin (coin)
@@ -71,9 +74,7 @@ class Player
   end
 
   def endRun
-    @turnsNeeded << @turns
-    @deckStory << { 'Turns' => @turns }.merge(@hand.summarize)
-    puts "#{@turns} turn run - #{@hand.grand_count_of_card(:treasure_map)} maps at end of run"
+    @turnsNeeded[@turns] ? @turnsNeeded[@turns] += 1 : @turnsNeeded[@turns] = 1
     reset
   end
 
@@ -93,6 +94,10 @@ class Player
     @actions > 0
   end
 
+  def can_buy?
+    @buys > 0
+  end
+
   def sort_cards
     @actions = @hand.actions
     @treasure = @hand.treasures
@@ -103,14 +108,10 @@ class Player
   end
 
   def story
-    uniques = @turnsNeeded.uniq.sort.reverse!
-    gameStory = {}
-    until uniques.empty?
-      gameStory[uniques[uniques.size - 1]] = @turnsNeeded.count(uniques.pop)
+    sortedHash = {}
+    @turnsNeeded.keys.sort.each do |k|
+      sortedHash[k] = @turnsNeeded[k]
     end
-    #####################
-    # @hand.splay
-    #####################
-    gameStory
+    sortedHash
   end
 end

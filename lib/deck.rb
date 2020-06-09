@@ -34,7 +34,7 @@ class Deck
         drawnCards << @contents.pop
       else
         fail "Ghost in the Discard!!!" if @discard.count(nil) > 0
-        pp "Player has shuffled discard into their deck"
+        # pp "Player has shuffled discard into their deck"
         @discard.shuffle!
         (@contents << @discard.pop(@discard.size)).flatten!
       end
@@ -76,6 +76,10 @@ class Deck
       matches << { card: c, index: i } if c.is_a?(class_from_symbol(target))
     end
     matches
+  end
+
+  def grand_count_of_all_cards
+    @contents.count + @discard.count
   end
 
   def hashify(set)

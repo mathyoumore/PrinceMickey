@@ -23,9 +23,10 @@ end
 
 def update(playerBoss, samples)
   # puts `clear`
-  playerBoss.each do |p|
-    puts  "#{p.name}: #{p.progress}/#{samples}\n"
-  end
+  # puts "\n"
+  # playerBoss.each do |p|
+  #   puts  "#{p.name}: #{p.progress}/#{samples}\n"
+  # end
 end
 
 def finish(playerBoss)
@@ -38,10 +39,9 @@ samples = 1000
 counter = 0
 
 playerBoss = [
-  DumbPlayer.new,
-  # DumbFilterPlayer.new,
-  # SmartFilterPlayer.new(1),
-  # SmartFilterPlayer.new(2),
+  # DumbPlayer.new,
+  DumbFilterPlayer.new,
+  SmartFilterPlayer.new(1),
   # SmartFilterPlayer.new(3),
   # SmartFilterPlayer.new(5),
   # SmartFilterPlayer.new
